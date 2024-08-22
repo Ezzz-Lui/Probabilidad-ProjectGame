@@ -1,5 +1,6 @@
-# Preview Project
-![imagen](https://github.com/user-attachments/assets/407ec08c-1303-40b0-9ea4-403cc3a1b139)
+# 🚀Preview Project 🚀
+![imagen](https://github.com/user-attachments/assets/813bdf02-9c8c-4728-bcde-e129b8aea4c6)
+
 
 # Astro Starter Kit: Basics
 ```sh
