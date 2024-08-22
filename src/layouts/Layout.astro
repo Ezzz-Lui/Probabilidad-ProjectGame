@@ -1,4 +1,6 @@
 ---
+// Supports weights 100-900
+import '@fontsource-variable/onest';
 interface Props {
 	title: string;
 }
@@ -23,18 +25,18 @@ const { title } = Astro.props;
 </html>
 <style is:global>
 	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
+    --accent: 58, 136, 234; /* Un tono azul suave */
+    --accent-light: 204, 230, 250; /* Un tono azul claro */
+    --accent-dark: 10, 49, 101; /* Un tono azul oscuro */
+    --accent-gradient: linear-gradient(
+        45deg,
+        rgb(var(--accent)),
+        rgb(var(--accent-light)) 30%,
+        white 60%
+    );
+}
 	html {
-		font-family: system-ui, sans-serif;
+		font-family: 'Onest Variable', system-ui;
 		background: #13151a;
 	}
 	code {
