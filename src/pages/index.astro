@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Probabilidad - Proyecto">
 	<main>
 		<svg
 			class="astro-a"
@@ -33,33 +33,34 @@ import Card from '../components/Card.astro';
 				</linearGradient>
 			</defs>
 		</svg>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
+		<h1>Proyecto de Probabilidad <span class="text-gradient">Astro</span></h1>
 		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
+			Presentamos escenarios con <code>probabilidad</code> aplicada de diferentes formas.<br />
+			<strong>Prueba:</strong> Haz click dentro de una de las siguientes opciones.
 		</p>
 		<ul role="list" class="link-card-grid">
 			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
+				href="https://astro.build/chat/"
+				title="Dados 🎲"
+				body="Lanzamiento de dados y sucesos aleatorios con probabilidad aplicada."
 			/>
 			<Card
 				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
+				title="Monedas 💰"
+				body="Lanzamiento de monedas con probabilidad aplicada."
 			/>
-		</ul>
+			<Card
+				href="https://astro.build/chat/"
+				title="Loteria 🎫"
+				body="Bingo y loteria con probabilidad aplicada."
+			/>
+			<Card
+				href="https://astro.build/chat/"
+				title="Ruleta 🎰"
+				body="Ruleta de la suerte con probabilidad aplicada."
+			/>
+
+			
 	</main>
 </Layout>
 
@@ -88,6 +89,7 @@ import Card from '../components/Card.astro';
 		line-height: 1;
 		text-align: center;
 		margin-bottom: 1em;
+		margin-top: 1em;
 	}
 	.text-gradient {
 		background-image: var(--accent-gradient);
