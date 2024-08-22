@@ -1,5 +1,7 @@
-# Astro Starter Kit: Basics
+# Preview Project
+![imagen](https://github.com/user-attachments/assets/407ec08c-1303-40b0-9ea4-403cc3a1b139)
 
+# Astro Starter Kit: Basics
 ```sh
 npm create astro@latest -- --template basics
 ```
