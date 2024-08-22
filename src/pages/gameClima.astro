@@ -5,44 +5,12 @@ import Card from '../components/Card.astro';
 
 <Layout title="Probabilidad - Proyecto">
 	<main>
-		<h1>Proyecto de Probabilidad <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
+		<h1 transition:persist="fade">Proyecto de Probabilidad <a href="/" class="text-gradient">Clima</a></h1>
+		<p class="instructions" transition:animate="slide">
 			Presentamos escenarios con <code>probabilidad</code> aplicada de diferentes formas.<br />
 			<strong>Prueba:</strong> Haz click dentro de una de las siguientes opciones.
 		</p>
 		<ul role="list" class="link-card-grid">
-			<Card
-				href="/gameDados"
-				title="Dados 🎲"
-				body="Lanzamiento de dados y sucesos aleatorios con probabilidad aplicada."
-			/>
-			<Card
-				href="/gameMonedas"
-				title="Monedas 💰"
-				body="Lanzamiento de monedas con probabilidad aplicada."
-			/>
-			<Card
-				href="/gameLoteria"
-				title="Loteria 🎫"
-				body="Bingo y loteria con probabilidad aplicada."
-			/>
-			<Card
-				href="/gameRuleta"
-				title="Ruleta 🎰"
-				body="Ruleta de la suerte con probabilidad aplicada."
-			/>
-			<Card
-				href="/gameClima"
-				title="Clima 🌦️"
-				body="Predicción del clima con probabilidad aplicada."
-			/>
-			<Card
-				href="/game21"
-				title="21 🃏"
-				body="Juego de cartas 21 con probabilidad aplicada."
-			/>
-
-			
 	</main>
 </Layout>
 
@@ -70,8 +38,8 @@ import Card from '../components/Card.astro';
 		font-weight: 700;
 		line-height: 1;
 		text-align: center;
-		margin-bottom: 0.2em;
-		margin-top: 0.5em;
+		margin-bottom: 1em;
+		margin-top: 1em;
 	}
 	.text-gradient {
 		background-image: var(--accent-gradient);
@@ -103,6 +71,6 @@ import Card from '../components/Card.astro';
 		grid-template-columns: repeat(auto-fit, minmax(16ch, 1fr));
 		gap: 2rem;
 		padding: 0;
-		padding-bottom: 2.3rem;
+		padding-bottom: 5rem;
 	}
 </style>
