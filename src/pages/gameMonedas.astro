@@ -6,13 +6,65 @@ import Card from '../components/Card.astro';
 <Layout title="Probabilidad - Proyecto">
 	<main>
 		<h1 transition:persist="fade">Proyecto de Probabilidad <a href="/" class="text-gradient">Monedas</a></h1>
-		<p class="instructions" transition:animate="slide">
-			Presentamos escenarios con <code>probabilidad</code> aplicada de diferentes formas.<br />
-			<strong>Prueba:</strong> Haz click dentro de una de las siguientes opciones.
-		</p>
-		<ul role="list" class="link-card-grid">
+		<ul role="list" class="link-card-grid"></ul>
+<div class="coin-flip">
+<label for="numLanzamientos">Número de lanzamientos:</label>
+<input type="number" id="numLanzamientos" min="1" value="1" />
+<button id="lanzarMonedaBtn">Lanzar Moneda</button>
+<div class="coin" id="coin"></div>
+		  
+<div id="resultado"></div>
+</div>
+			
 	</main>
 </Layout>
+
+
+
+<script>
+  if (typeof window !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+      const lanzarMonedaBtn = document.getElementById('lanzarMonedaBtn');
+      const numLanzamientosInput = document.getElementById('numLanzamientos');
+      const resultadoDiv = document.getElementById('resultado');
+
+      if (!lanzarMonedaBtn || !numLanzamientosInput || !resultadoDiv) {
+        console.error('Uno de los elementos necesarios no está disponible.');
+        return;
+      }
+
+      lanzarMonedaBtn.addEventListener('click', () => {
+        const numLanzamientos = parseInt(numLanzamientosInput.value, 10);
+
+       
+        if (isNaN(numLanzamientos) || numLanzamientos <= 0) {
+          resultadoDiv.innerHTML = `<p>Por favor ingresa un número válido de lanzamientos.</p>`;
+          return;
+        }
+
+        let caras = 0, cruces = 0;
+
+        for (let i = 0; i < numLanzamientos; i++) {
+          const result = Math.random() < 0.5 ? 'Cara' : 'Cruz';
+          if (result === 'Cara') caras++;
+          else cruces++;
+        }
+
+        const probabilidadCara = (caras / numLanzamientos) * 100;
+        const probabilidadCruz = (cruces / numLanzamientos) * 100;
+
+        resultadoDiv.innerHTML = `
+          <p>Caras: ${caras} (${probabilidadCara.toFixed(2)}%)</p>
+          <p>Cruces: ${cruces} (${probabilidadCruz.toFixed(2)}%)</p>
+        `;
+      });
+    });
+  }
+</script>
+
+
+
+
 
 <style>
 	main {
@@ -73,4 +125,39 @@ import Card from '../components/Card.astro';
 		padding: 0;
 		padding-bottom: 5rem;
 	}
+
+	.coin-flip {
+    text-align: center;
+    margin: 2rem 0;
+	color: white;
+  }
+
+  #resultado p {
+    margin: 0.5rem 0;
+  }
+
+  input {
+  margin: 0 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #ffffff; 
+  color: rgb(0, 0, 0); 
+  border: 1px solid #0070f3;
+  border-radius: 4px; 
+}
+
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #005bb5;
+  }
+
+  
 </style>
