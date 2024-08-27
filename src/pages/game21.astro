@@ -1,34 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import CardsValues from '../assets/ArraysValues/arr.js'
+import cardImagesCDN from '../assets/ArraysValues/arr.js'
+
+const carImages = cardImagesCDN;
+
+function getRandomCard(obj) {
+	const keys = Object.keys(obj);
+	return keys[Math.floor(Math.random()*keys.length)];
+}
 ---
 
 <Layout title="Probabilidad - Proyecto">
 	<main>
 		<h1 transition:persist="fade">Proyecto de Probabilidad <a href="/" class="text-gradient">21 Blackjack</a></h1>
-		<p class="instructions" transition:animate="slide">
-			Presentamos escenarios con <code>probabilidad</code> aplicada de diferentes formas.<br />
-			<strong>Prueba:</strong> Haz click dentro de una de las siguientes opciones.
-		</p>
-		<div class="mesa">
-			<div class="dealer">
-			  <h2>Dealer</h2>
-			  <div class="mazo">
-				<div class="carta">🂠</div>
-				<div class="carta">🂠</div>
-				<!-- Más cartas del dealer -->
-			  </div>
+		<section class="flex justify-center ">
+			<h2 class="flex flex-col space-y-4">Dealer: <span></span></h2>
+			<div id="dealer-cards">
+				<img class="h-auto max-w-lg rounded-lg my-16" src="https://deckofcardsapi.com/static/img/back.png" alt="backcard img">
 			</div>
-			
-			<div class="jugador">
-			  <h2>Jugador</h2>
-			  <div class="mazo">
-				<div class="carta">🂠</div>
-				<div class="carta">🂠</div>
-				<!-- Más cartas del jugador -->
-			  </div>
-			</div>
-		  </div>
+	
+			<h2>Jugador: <span id="jugador-suma"></span></h2>
+		</section>
+
+		<br>
+		<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+			<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+			Tomar otra carta
+			</span>
+		</button>
+		<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+			<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+			Quedarse
+			</span>
+		</button>
+		<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+			<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+			Reiniciar
+			</span>
+		</button>
+		<p id="resultado"></p>
 	</main>
 </Layout>
 
@@ -84,35 +95,23 @@ import Card from '../components/Card.astro';
 	.instructions strong {
 		color: rgb(var(--accent-light));
 	}
-
-	.mesa {
-		display: flex;
-		justify-content: space-around;
-		padding: 20px;
-		border-radius: 10px;
-	}
-	.dealer, .jugador {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+	/* src/styles/Deck.css */
+	.deck {
+		border: 1px solid #ddd;
+		padding: 10px;
+		width: 200px;
 	}
 
-	.mazo {
-		display: flex;
-		gap: 10px;
+	.cards {
+		margin-top: 10px;
 	}
 
-	.carta {
-		width: 60px;
-		height: 90px;
-		background-color: white;
-		border: 2px solid black;
-		border-radius: 5px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2rem;
-		color: black;
+	.card {
+		border: 1px solid #ccc;
+		padding: 5px;
+		margin-bottom: 5px;
+		background: #f9f9f9;
 	}
+
 
 </style>
