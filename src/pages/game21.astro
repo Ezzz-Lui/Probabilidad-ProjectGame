@@ -17,21 +17,24 @@ import { useEffect, useState } from 'react';
 			<h1 class="ml-2 pl-4 text-4xl font-bold" transition:persist="fade">Proyecto de Probabilidad <a class="text-gradient">21 Blackjack</a></h1>
 		</div>
 		
-		<section>
-			<h2 class="flex justify-items-center px-44 font-semibold text-xl">Dealer</h2>
-			<h2 class="text-center">Jugador</h2>
-		</section>
-		
-		<section class="flex justify-center space-x-12">
-			<div class=" grid grid-cols-2 place-content-center space-x-2" id="dealer-cards">
-				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="backcard img">
-				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/5S.png" alt="second card dealer">
-			</div>
-	
-			<div class=" grid grid-cols-2 place-content-center space-x-2" id="dealer-cards">
-				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="backcard img">
-				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/5S.png" alt="second card dealer">
-			</div>
+		<section class="flex justify-center space-x-4">
+			<figure class="max-w-lg">
+				<img class="max-w-full rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="image description">
+				<figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Dealer Card</figcaption>
+			</figure>
+			<figure class="max-w-lg">
+				<img class="max-w-full rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="image description">
+				<figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Dealer Card</figcaption>
+			</figure>
+
+			<figure class="max-w-lg">
+				<img class="max-w-full rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="image description">
+				<figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Player Card</figcaption>
+			</figure>
+			<figure class="max-w-lg">
+				<img class="max-w-full rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="image description">
+				<figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Player Card</figcaption>
+			</figure>
 		</section>
 
 		<br>
@@ -53,6 +56,29 @@ import { useEffect, useState } from 'react';
 			</button>
 		</section>
 		<p id="resultado"></p>
+		<br>
+		<section class="flex flex-col space-y-4 justify-center px-4 sm:px-6 lg:px-8">
+			<h2 class="pb-6 font-semibold text-3xl">Estadisticas</h2>
+			<a href="#" class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+			  <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Probabilidad de Blackjack en un saque</h5>
+			  <p class="font-normal text-gray-700 dark:text-gray-400">La probabilidad de obtener 21 en el primer saque para ganar es de aproximadamente 4.8%.</p>
+			</a>
+			<a href="#" class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+			  <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Probabilidad de fallo</h5>
+			  <p class="font-normal text-gray-700 dark:text-gray-400">- Pasarse de 21: --%</p>
+			  <p class="font-normal text-gray-700 dark:text-gray-400">- El dealer gana: --%</p>
+			  <p class="font-normal text-gray-700 dark:text-gray-400">- Empate: --%</p>
+			</a>
+			<a href="#" class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+			  <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
+			  <p class="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+			</a>
+			<a href="#" class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+			  <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
+			  <p class="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+			</a>
+		  </section>
+		  
 	</main>
 </Layout>
 
