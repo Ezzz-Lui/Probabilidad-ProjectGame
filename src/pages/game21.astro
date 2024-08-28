@@ -1,118 +1,246 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Layout from "../layouts/Layout.astro";
+import { useEffect, useState } from "react";
 ---
 
 <Layout title="Probabilidad - Proyecto">
-	<main>
-		<h1 transition:persist="fade">Proyecto de Probabilidad <a href="/" class="text-gradient">21 Blackjack</a></h1>
-		<p class="instructions" transition:animate="slide">
-			Presentamos escenarios con <code>probabilidad</code> aplicada de diferentes formas.<br />
-			<strong>Prueba:</strong> Haz click dentro de una de las siguientes opciones.
-		</p>
-		<div class="mesa">
-			<div class="dealer">
-			  <h2>Dealer</h2>
-			  <div class="mazo">
-				<div class="carta">🂠</div>
-				<div class="carta">🂠</div>
-				<!-- Más cartas del dealer -->
-			  </div>
-			</div>
-			
-			<div class="jugador">
-			  <h2>Jugador</h2>
-			  <div class="mazo">
-				<div class="carta">🂠</div>
-				<div class="carta">🂠</div>
-				<!-- Más cartas del jugador -->
-			  </div>
-			</div>
-		  </div>
-	</main>
+  <main>
+    <div class="relative my-6 flex justify-start items-center">
+      <a href="/">
+        <svg
+          class="w-6 h-6 text-gray-800 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 12h14M5 12l4-4m-4 4 4 4"></path>
+        </svg>
+      </a>
+      <h1 class="ml-2 pl-4 text-4xl font-bold" transition:persist="fade">
+        Proyecto de Probabilidad <a class="text-gradient">21 Blackjack</a>
+      </h1>
+    </div>
+
+    <section id="cards-container" class="flex justify-center text-center space-x-2 text-sm">
+      <img
+        class="max-w-full h-48 space-x-4"
+        src="https://deckofcardsapi.com/static/img/back.png"
+        alt=""
+      />
+      <img
+        class="max-w-full h-48"
+        src="https://deckofcardsapi.com/static/img/back.png"
+        alt=""
+      />
+    </section>
+
+    <br />
+    <section class="flex justify-center">
+      <button
+        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
+      >
+        <span
+          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        >
+          Tomar otra carta
+        </span>
+      </button>
+      <button
+        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
+      >
+        <span
+          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        >
+          Quedarse
+        </span>
+      </button>
+      <button
+        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+      >
+        <span
+          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        >
+          Reiniciar
+        </span>
+      </button>
+      <button
+        id="draw-cards"
+        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400"
+      >
+        <span
+          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        >
+          Repartir Cartas
+        </span>
+      </button>
+    </section>
+
+    <p id="resultado"></p>
+    <br />
+    <section
+      class="flex flex-col space-y-4 justify-center px-4 sm:px-6 lg:px-8"
+    >
+      <h2 class="pb-6 font-semibold text-3xl">Estadisticas</h2>
+      <a
+        href="#"
+        class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        <h5
+          class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Probabilidad de Blackjack en un saque
+        </h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          La probabilidad de obtener 21 en el primer saque para ganar es de
+          aproximadamente 4.8%.
+        </p>
+      </a>
+      <a
+        href="#"
+        class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        <h5
+          class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Probabilidad de fallo
+        </h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          - Pasarse de 21: --%
+        </p>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          - El dealer gana: --%
+        </p>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          - Empate: --%
+        </p>
+      </a>
+      <a
+        href="#"
+        class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        <h5
+          class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Obtener una carta de valor 10
+        </h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          (10, J, Q, K) como la primera carta: --%
+        </p>
+      </a>
+    </section>
+
+    <script>
+      document.getElementById("draw-cards").addEventListener("click", () => {
+        // Paso 1: Crear un nuevo mazo y barajar
+        fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
+          .then((response) => response.json())
+          .then((deck) => {
+            // Paso 2: Sacar dos cartas
+            return fetch(
+              `https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=2`
+            );
+          })
+          .then((response) => response.json())
+          .then((data) => {
+            const cardsContainer = document.getElementById("cards-container");
+            cardsContainer.innerHTML = ""; // Limpiar el contenedor de cartas
+
+            // Mostrar cada carta extraída
+            data.cards.forEach((card) => {
+              // Crear un contenedor para la carta y su valor
+              const cardElement = document.createElement("div");
+              cardElement.className = "card";
+
+              // Crear y mostrar la imagen de la carta
+              const img = document.createElement("img");
+              img.src = card.image;
+              img.alt = `${card.value} of ${card.suit}`;
+			  img.style.width = '138.19px';
+			  img.style.height = '192px';
+
+              // Crear y mostrar el valor de la carta
+              const value = document.createElement("p");
+              value.textContent = `${card.value} de ${card.suit}`;
+              cardElement.appendChild(img);
+              cardElement.appendChild(value);
+              cardsContainer.appendChild(cardElement);
+            });
+          })
+        .catch((error) => console.error("Error:", error));
+    });
+    </script>
+  </main>
 </Layout>
 
 <style>
-	main {
-		margin: auto;
-		padding: 1rem 1rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
-		color: white;
-		font-size: 20px;
-		line-height: 1.6;
-	}
-	.astro-a {
-		position: absolute;
-		top: -32px;
-		left: 50%;
-		transform: translatex(-50%);
-		width: 220px;
-		height: auto;
-		z-index: -1;
-	}
-	h1 {
-		font-size: 5rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin-bottom: 1em;
-		margin-top: 1em;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
-	.instructions {
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	.instructions code {
-		font-size: 0.8em;
-		font-weight: bold;
-		background: rgba(var(--accent-light), 12%);
-		color: rgb(var(--accent-light));
-		border-radius: 4px;
-		padding: 0.3em 0.4em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent-light));
-	}
+  main {
+    margin: auto;
+    padding: 1rem 1rem;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .astro-a {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translatex(-50%);
+    width: 220px;
+    height: auto;
+    z-index: -1;
+  }
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+  .instructions {
+    margin-bottom: 2rem;
+    border: 1px solid rgba(var(--accent-light), 25%);
+    background: linear-gradient(
+      rgba(var(--accent-dark), 66%),
+      rgba(var(--accent-dark), 33%)
+    );
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  .instructions code {
+    font-size: 0.8em;
+    font-weight: bold;
+    background: rgba(var(--accent-light), 12%);
+    color: rgb(var(--accent-light));
+    border-radius: 4px;
+    padding: 0.3em 0.4em;
+  }
+  .instructions strong {
+    color: rgb(var(--accent-light));
+  }
+  /* src/styles/Deck.css */
+  .deck {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 200px;
+  }
 
-	.mesa {
-		display: flex;
-		justify-content: space-around;
-		padding: 20px;
-		border-radius: 10px;
-	}
-	.dealer, .jugador {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
+  .cards {
+    margin-top: 10px;
+  }
 
-	.mazo {
-		display: flex;
-		gap: 10px;
-	}
-
-	.carta {
-		width: 60px;
-		height: 90px;
-		background-color: white;
-		border: 2px solid black;
-		border-radius: 5px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2rem;
-		color: black;
-	}
-
+  .card {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-bottom: 5px;
+    background: #f9f9f9;
+  }
 </style>
