@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+<Layout title="Probabilidad - Proyecto">
+    <main>
+        <div class="relative my-6 flex justify-start items-center">
+			<a href="/">
+				<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+					<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+				</svg>
+			</a>
+			<h1 class="ml-2 pl-4 text-4xl font-bold" transition:persist="fade">Proyecto de Probabilidad <a class="text-gradient">21 Blackjack</a></h1>
+		</div>
+    
+        <button id="draw-cards">Sacar Cartas</button>
+        <div id="cards-container"></div>
+
+        <script>
+            document.getElementById('draw-cards').addEventListener('click', () => {
+                // Paso 1: Crear un nuevo mazo y barajar
+                fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+                    .then(response => response.json())
+                    .then(deck => {
+                        // Paso 2: Sacar dos cartas
+                        return fetch(`https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=2`);
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const cardsContainer = document.getElementById('cards-container');
+                        cardsContainer.innerHTML = ''; // Limpiar el contenedor de cartas
+
+                        // Mostrar cada carta extraída
+                        data.cards.forEach(card => {
+                            const img = document.createElement('img');
+                            img.src = card.image; // URL de la imagen de la carta
+                            img.alt = `${card.value} of ${card.suit}`;
+                            img.style.width = '100px'; // Tamaño de la carta
+                            cardsContainer.appendChild(img);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        </script>
+    </main>
+</Layout>
