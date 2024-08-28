@@ -2,43 +2,56 @@
 import Layout from '../layouts/Layout.astro';
 import CardsValues from '../assets/ArraysValues/arr.js'
 import cardImagesCDN from '../assets/ArraysValues/arr.js'
+import { useEffect, useState } from 'react';
 
-const carImages = cardImagesCDN;
-
-function getRandomCard(obj) {
-	const keys = Object.keys(obj);
-	return keys[Math.floor(Math.random()*keys.length)];
-}
 ---
 
 <Layout title="Probabilidad - Proyecto">
 	<main>
-		<h1 transition:persist="fade">Proyecto de Probabilidad <a href="/" class="text-gradient">21 Blackjack</a></h1>
-		<section class="flex justify-center ">
-			<h2 class="flex flex-col space-y-4">Dealer: <span></span></h2>
-			<div id="dealer-cards">
-				<img class="h-auto max-w-lg rounded-lg my-16" src="https://deckofcardsapi.com/static/img/back.png" alt="backcard img">
+		<div class="relative my-6 flex justify-start items-center">
+			<a href="/">
+				<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+					<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+				</svg>
+			</a>
+			<h1 class="ml-2 pl-4 text-4xl font-bold" transition:persist="fade">Proyecto de Probabilidad <a class="text-gradient">21 Blackjack</a></h1>
+		</div>
+		
+		<section>
+			<h2 class="flex justify-items-center px-44 font-semibold text-xl">Dealer</h2>
+			<h2 class="text-center">Jugador</h2>
+		</section>
+		
+		<section class="flex justify-center space-x-12">
+			<div class=" grid grid-cols-2 place-content-center space-x-2" id="dealer-cards">
+				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="backcard img">
+				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/5S.png" alt="second card dealer">
 			</div>
 	
-			<h2>Jugador: <span id="jugador-suma"></span></h2>
+			<div class=" grid grid-cols-2 place-content-center space-x-2" id="dealer-cards">
+				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/back.png" alt="backcard img">
+				<img class="max-w-lg rounded-lg my-16 object-contain h-48" src="https://deckofcardsapi.com/static/img/5S.png" alt="second card dealer">
+			</div>
 		</section>
 
 		<br>
-		<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
-			<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-			Tomar otra carta
-			</span>
-		</button>
-		<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
-			<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-			Quedarse
-			</span>
-		</button>
-		<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-			<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-			Reiniciar
-			</span>
-		</button>
+		<section class="flex justify-center">
+			<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+				Tomar otra carta
+				</span>
+			</button>
+			<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+				Quedarse
+				</span>
+			</button>
+			<button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+				<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+				Reiniciar
+				</span>
+			</button>
+		</section>
 		<p id="resultado"></p>
 	</main>
 </Layout>
@@ -47,10 +60,9 @@ function getRandomCard(obj) {
 	main {
 		margin: auto;
 		padding: 1rem 1rem;
-		width: 800px;
 		max-width: calc(100% - 2rem);
 		color: white;
-		font-size: 20px;
+		font-size: 16px;
 		line-height: 1.6;
 	}
 	.astro-a {
@@ -61,14 +73,6 @@ function getRandomCard(obj) {
 		width: 220px;
 		height: auto;
 		z-index: -1;
-	}
-	h1 {
-		font-size: 5rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin-bottom: 1em;
-		margin-top: 1em;
 	}
 	.text-gradient {
 		background-image: var(--accent-gradient);
