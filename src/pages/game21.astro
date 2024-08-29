@@ -69,6 +69,7 @@ function recargarPagina(){
     <section class="flex justify-center grid-flow-col">
       <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
         <button
+          id="reload-button"
           type="button"
           class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           >Reiniciar</button
@@ -267,6 +268,16 @@ function recargarPagina(){
               return resultado;
           }
       }
+
+      // Selecciona el botón por su ID
+      const reloadButton = document.getElementById('reload-button');
+
+      // Agrega un evento de click al botón
+      reloadButton.addEventListener('click', () => {
+        // Recarga la página
+        location.reload();
+      });
+
     </script>
   </main>
 </Layout>
