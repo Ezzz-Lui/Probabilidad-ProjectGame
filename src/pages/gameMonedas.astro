@@ -1,163 +1,249 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import { useEffect, useState } from "react";
 ---
 
 <Layout title="Probabilidad - Proyecto">
-	<main>
-		<h1 transition:persist="fade">Proyecto de Probabilidad <a href="/" class="text-gradient">Monedas</a></h1>
-		<ul role="list" class="link-card-grid"></ul>
-<div class="coin-flip">
-<label for="numLanzamientos">Número de lanzamientos:</label>
-<input type="number" id="numLanzamientos" min="1" value="1" />
-<button id="lanzarMonedaBtn">Lanzar Moneda</button>
-<div class="coin" id="coin"></div>
+  <main>
+    <h1 transition:persist="fade">Proyecto de Probabilidad <a href="/" class="text-gradient">Moneda</a></h1>
+    <ul role="list" class="link-card-grid"></ul>
+    
+    <div class="coin-flip">
+      <!-- Contenedor para la animación de la moneda -->
+      <div class="coin" id="coin">
+        <img src="/src/assets/dolar.png" alt="Moneda" id="monedaImg" class="coin-img">
+      </div>
+      
+      <label for="numLanzamientos">Número de lanzamientos:</label>
+      <input type="number" id="numLanzamientos" min="1" value="1" />
+      <button id="lanzarMonedaBtn"
+        type="button"
+        class="bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-lg px-6 py-3 text-center me-2 mb-2"
+        style="color: #000000;">
+        Lanzar Moneda
+      </button>
+      
+      <div id="resultado-container">
+		<div id="resultado"></div>
+
+	  </div>
+
+	  
+  </main>
+
+
+  <section
+      class="flex flex-col space-y-4 justify-center px-4 sm:px-6 lg:px-8"
+    >
+	<h2 class="pb-6 font-semibold text-3xl" style="color: white;">Estadísticas</h2>
+
+
+      <a
+        href="#"
+        class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        <h5
+          class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
 		  
-<div id="resultado"></div>
-</div>
-			
-	</main>
+          Probabilidad de Lanzamieno de Moneda       </h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          La probabilidad de obtener cara o cruz en el primer lanzamiento es de <strong
+            class="font-extrabold">50% para cada una </strong
+          >.
+        </p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          <strong>Cálculo:</strong>
+          Hay una posibilidad de que salga cara o cruz , al haber dos posibles resultados (CARA O CRUZ) y cada uno tiene la misma probabilidad entonces la probabilidad de cada uno es 1/2 o 50% 
+        </p>
+      </a>
 </Layout>
 
-
-
 <script>
-  if (typeof window !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', () => {
-      const lanzarMonedaBtn = document.getElementById('lanzarMonedaBtn');
-      const numLanzamientosInput = document.getElementById('numLanzamientos');
-      const resultadoDiv = document.getElementById('resultado');
-
-      if (!lanzarMonedaBtn || !numLanzamientosInput || !resultadoDiv) {
-        console.error('Uno de los elementos necesarios no está disponible.');
-        return;
-      }
-
-      lanzarMonedaBtn.addEventListener('click', () => {
-        const numLanzamientos = parseInt(numLanzamientosInput.value, 10);
-
-       
-        if (isNaN(numLanzamientos) || numLanzamientos <= 0) {
-          resultadoDiv.innerHTML = `<p>Por favor ingresa un número válido de lanzamientos.</p>`;
-          return;
-        }
-
-        let caras = 0, cruces = 0;
-
-        for (let i = 0; i < numLanzamientos; i++) {
-          const result = Math.random() < 0.5 ? 'Cara' : 'Cruz';
-          if (result === 'Cara') caras++;
-          else cruces++;
-        }
-
-        const probabilidadCara = (caras / numLanzamientos) * 100;
-        const probabilidadCruz = (cruces / numLanzamientos) * 100;
-
-        resultadoDiv.innerHTML = `
-          <p>Caras: ${caras} (${probabilidadCara.toFixed(2)}%)</p>
-          <p>Cruces: ${cruces} (${probabilidadCruz.toFixed(2)}%)</p>
-        `;
-      });
-    });
-  }
-</script>
-
-
-
-
-
+	if (typeof window !== 'undefined') {
+	  document.addEventListener('DOMContentLoaded', () => {
+		const lanzarMonedaBtn = document.getElementById('lanzarMonedaBtn');
+		const numLanzamientosInput = document.getElementById('numLanzamientos');
+		const resultadoDiv = document.getElementById('resultado');
+		const monedaImg = document.getElementById('monedaImg');
+  
+		if (!lanzarMonedaBtn || !numLanzamientosInput || !resultadoDiv || !monedaImg) {
+		  console.error('Uno de los elementos necesarios no está disponible.');
+		  return;
+		}
+  
+		lanzarMonedaBtn.addEventListener('click', () => {
+		  const numLanzamientos = parseInt(numLanzamientosInput.value, 10);
+  
+		  if (isNaN(numLanzamientos) || numLanzamientos <= 0) {
+			resultadoDiv.innerHTML = `<p>Por favor ingresa un número válido de lanzamientos.</p>`;
+			return;
+		  }
+  
+		  let resultados = {};
+  
+		  // Generar todas las combinaciones posibles de resultados (caras y cruces)
+		  const generarCombinaciones = (n) => {
+			if (n === 1) return ['C', 'X'];
+			const prevCombinaciones = generarCombinaciones(n - 1);
+			const nuevasCombinaciones = [];
+			prevCombinaciones.forEach(combinacion => {
+			  nuevasCombinaciones.push('C' + combinacion);
+			  nuevasCombinaciones.push('X' + combinacion);
+			});
+			return nuevasCombinaciones;
+		  };
+  
+		  const combinaciones = generarCombinaciones(numLanzamientos);
+  
+		  // Calcular la probabilidad de cada combinación
+		  combinaciones.forEach(combinacion => {
+			let caras = 0;
+			let cruces = 0;
+			for (let i = 0; i < combinacion.length; i++) {
+			  if (combinacion[i] === 'C') caras++;
+			  else cruces++;
+			}
+			const probabilidad = Math.pow(0.5, numLanzamientos) * 100;
+			const descripcion = `Caras: ${caras}, Cruces: ${cruces}`;
+			resultados[descripcion] = (resultados[descripcion] || 0) + probabilidad;
+		  });
+  
+		  // Limitar el número de resultados mostrados
+		  const maxResultados = 10; // Ajusta el número de resultados según tus necesidades
+		  const resultadosArray = Object.entries(resultados).slice(0, maxResultados);
+  
+		  const fragment = document.createDocumentFragment();
+		  resultadosArray.forEach(([descripcion, probabilidad]) => {
+			const probabilidadNumerica = probabilidad as number;
+			const resultadoCaja = document.createElement('div');
+			resultadoCaja.classList.add('resultado-caja');
+			resultadoCaja.innerHTML = `<p>${descripcion} - Probabilidad: ${probabilidadNumerica.toFixed(2)}%</p>`;
+			fragment.appendChild(resultadoCaja);
+		  });
+  
+		  resultadoDiv.innerHTML = ''; // Limpiar el contenido anterior
+		  resultadoDiv.appendChild(fragment);
+  
+		  // Activar la animación de la moneda
+		  monedaImg.classList.add('moneda-girando');
+  
+		  // Retirar la animación después de que se complete para permitir nuevas animaciones en futuros clicks
+		  setTimeout(() => {
+			monedaImg.classList.remove('moneda-girando');
+		  }, 1000); // La duración de la animación debe coincidir con la definida en el CSS
+		});
+	  });
+	}
+  </script>
+  
+  
 <style>
 	main {
-		margin: auto;
-		padding: 1rem 1rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
-		color: white;
-		font-size: 20px;
-		line-height: 1.6;
+	  margin: auto;
+	  padding: 1rem 1rem;
+	  width: 800px;
+	  max-width: calc(100% - 2rem);
+	  color: white;
+	  font-size: 20px;
+	  line-height: 1.6;
 	}
-	.astro-a {
-		position: absolute;
-		top: -32px;
-		left: 50%;
-		transform: translatex(-50%);
-		width: 220px;
-		height: auto;
-		z-index: -1;
-	}
+  
 	h1 {
-		font-size: 5rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin-bottom: 1em;
-		margin-top: 1em;
+	  font-size: 5rem;
+	  font-weight: 700;
+	  line-height: 1;
+	  text-align: center;
+	  margin-bottom: 0.5em; /* Reducido para mover el título más cerca del contenido */
+	  margin-top: 1em; /* Ajustado para espacio superior */
 	}
+  
 	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
+	  background-image: var(--accent-gradient);
+	  -webkit-background-clip: text;
+	  -webkit-text-fill-color: transparent;
+	  background-size: 400%;
+	  background-position: 0%;
 	}
-	.instructions {
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	.instructions code {
-		font-size: 0.8em;
-		font-weight: bold;
-		background: rgba(var(--accent-light), 12%);
-		color: rgb(var(--accent-light));
-		border-radius: 4px;
-		padding: 0.3em 0.4em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent-light));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(16ch, 1fr));
-		gap: 2rem;
-		padding: 0;
-		padding-bottom: 5rem;
-	}
-
+  
 	.coin-flip {
-    text-align: center;
-    margin: 2rem 0;
-	color: white;
-  }
-
-  #resultado p {
-    margin: 0.5rem 0;
-  }
-
-  input {
-  margin: 0 1rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-  background-color: #ffffff; 
-  color: rgb(0, 0, 0); 
-  border: 1px solid #0070f3;
-  border-radius: 4px; 
+	  text-align: center;
+	  margin: 2rem 0;
+	  color: white;
+	}
+  
+	.coin {
+  margin-bottom: 10px; /* Eliminamos este margen */
+  display: flex; /* Agregamos display: flex para utilizar flexbox */
+  align-items: center; /* Centramos verticalmente los elementos dentro de .coin */
+	}
+  
+	.coin-img {
+	  width: 190px;
+	  height: 190px;
+	  display: block;
+	  margin: 0 auto;
+	  
+	  margin-bottom: 75px; /* Agregamos un margen inferior para separar la imagen del input */
+	}
+  
+	#resultado {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  gap: 1rem; /* Espacio entre las cajas de resultados */
+	}
+  
+	#resultado-container {
+  max-height: 400px; /* Ajusta la altura según tus necesidades */
+  overflow-y: auto; /* Agrega scroll vertical si el contenido excede la altura */
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.7); /* Color de fondo para hacer contraste con el texto */
 }
 
-  button {
-    padding: 0.5rem 1rem;
-    background-color: #0070f3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #005bb5;
-  }
-
+.resultado-caja {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 200px;
+  text-align: center;
+  margin-bottom: 1rem; /* Espacio entre cajas de resultados */
+}
   
-</style>
+	input {
+	  margin: 0 1rem;
+	  padding: 0.5rem;
+	  font-size: 1rem;
+	  background-color: #ffffff; 
+	  color: rgb(0, 0, 0); 
+	  border: 1px solid #0070f3;
+	  border-radius: 4px; 
+	}
+  
+	button {
+	  padding: 0.5rem 1rem;
+	  background-color: #0070f3;
+	  color: white;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+  
+	button:hover {
+	  background-color: #005bb5;
+	}
+  
+	.moneda-girando {
+	  animation: girarMoneda 1s ease-in-out forwards;
+	}
+  
+	@keyframes girarMoneda {
+	  0% { transform: rotateY(0deg); }
+	  50% { transform: rotateY(180deg); }
+	  100% { transform: rotateY(380deg); }
+	}
+  </style>
+  
