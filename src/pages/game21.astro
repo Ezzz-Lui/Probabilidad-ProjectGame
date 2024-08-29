@@ -29,58 +29,64 @@ import { useEffect, useState } from "react";
       </h1>
     </div>
 
-    <section id="cards-container" class="flex justify-center text-center space-x-2 text-sm">
-      <img
-        class="max-w-full h-48 space-x-4"
-        src="https://deckofcardsapi.com/static/img/back.png"
-        alt=""
-      />
-      <img
-        class="max-w-full h-48"
-        src="https://deckofcardsapi.com/static/img/back.png"
-        alt=""
-      />
-    </section>
+    <div class="justify-center">
+      <section class="justify-center text-center text-sm ">
+        <h2 class="text-center justify-center my-6">Tus cartas</h2>
+        <div id="player-cards-container" class="flex grid-cols-3 justify-center gap-3 my-8">
+          <img
+            class="max-w-full h-48 object-cover"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+          <img
+            class="max-w-full h-48"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+        </div>
+      </section>
+      <section class="justify-center text-center text-sm ">
+        <h2 class="text-center justify-center my-6">Cartas del dealer</h2>
+        <div id="dealer-cards-container" class="flex grid-cols-3 justify-center gap-3">
+          <img
+            class="max-w-full h-48 space-x-4"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+          <img
+            class="max-w-full h-48"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+        </div>
+      </section>
+    </div>
 
     <br />
-    <section class="flex justify-center">
-      <button
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+    <section class="flex justify-center grid-flow-col">
+      <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+        <button
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Tomar Carta</button
         >
-          Tomar otra carta
-        </span>
-      </button>
-      <button
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        <button
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Quedarse</button
         >
-          Quedarse
-        </span>
-      </button>
-      <button
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        <button
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Pedir Carta</button
         >
-          Reiniciar
-        </span>
-      </button>
-      <button
-        id="draw-cards"
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        <button
+          id="draw-cards"
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Repartir Cartas</button
         >
-          Repartir Cartas
-        </span>
-      </button>
+      </div>
     </section>
 
     <p id="resultado"></p>
@@ -89,6 +95,7 @@ import { useEffect, useState } from "react";
       class="flex flex-col space-y-4 justify-center px-4 sm:px-6 lg:px-8"
     >
       <h2 class="pb-6 font-semibold text-3xl">Estadisticas</h2>
+
       <a
         href="#"
         class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
@@ -99,10 +106,20 @@ import { useEffect, useState } from "react";
           Probabilidad de Blackjack en un saque
         </h5>
         <p class="font-normal text-gray-700 dark:text-gray-400">
-          La probabilidad de obtener 21 en el primer saque para ganar es de
-          aproximadamente 4.8%.
+          La probabilidad de obtener 21 en el primer saque es de aproximadamente <strong
+            class="font-extrabold">4.8%</strong
+          >.
+        </p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          <strong>Cálculo:</strong>
+          La probabilidad de sacar un As primero es <code>4/52</code>, y la de
+          sacar una carta de valor 10 después es <code>16/51</code>.
+          Alternativamente, la probabilidad de sacar un 10 primero es <code
+            >16/52</code
+          >, y luego un As es <code>4/51</code>.
         </p>
       </a>
+
       <a
         href="#"
         class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
@@ -112,6 +129,7 @@ import { useEffect, useState } from "react";
         >
           Probabilidad de fallo
         </h5>
+
         <p class="font-normal text-gray-700 dark:text-gray-400">
           - Pasarse de 21: --%
         </p>
@@ -122,6 +140,7 @@ import { useEffect, useState } from "react";
           - Empate: --%
         </p>
       </a>
+
       <a
         href="#"
         class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
@@ -129,9 +148,12 @@ import { useEffect, useState } from "react";
         <h5
           class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          Obtener una carta de valor 10
+          Stats Actuales
         </h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
+        <p id="player-score" class="font-normal text-gray-700 dark:text-gray-400">
+          (10, J, Q, K) como la primera carta: --%
+        </p>
+        <p id="dealer-score" class="font-normal text-gray-700 dark:text-gray-400">
           (10, J, Q, K) como la primera carta: --%
         </p>
       </a>
@@ -143,39 +165,96 @@ import { useEffect, useState } from "react";
         fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
           .then((response) => response.json())
           .then((deck) => {
-            // Paso 2: Sacar dos cartas
+            // Paso 2: Sacar dos cartas para el jugador y dos para el dealer
             return fetch(
-              `https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=2`
+              `https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=4`
             );
           })
           .then((response) => response.json())
           .then((data) => {
-            const cardsContainer = document.getElementById("cards-container");
-            cardsContainer.innerHTML = ""; // Limpiar el contenedor de cartas
+            // Separar las cartas entre jugador y dealer
+            const playerCards = data.cards.slice(0, 2); // Primeras dos cartas para el jugador
+            const dealerCards = data.cards.slice(2, 4); // Últimas dos cartas para el dealer
+            const playerScore = calcularValorMano(playerCards);
+            const dealerScore = calcularValorMano(dealerCards);
 
-            // Mostrar cada carta extraída
-            data.cards.forEach((card) => {
-              // Crear un contenedor para la carta y su valor
-              const cardElement = document.createElement("div");
-              cardElement.className = "card";
+            // Mostrar cartas del jugador
+            mostrarCartas(playerCards, "player-cards-container");
 
-              // Crear y mostrar la imagen de la carta
-              const img = document.createElement("img");
-              img.src = card.image;
-              img.alt = `${card.value} of ${card.suit}`;
-			  img.style.width = '138.19px';
-			  img.style.height = '192px';
-
-              // Crear y mostrar el valor de la carta
-              const value = document.createElement("p");
-              value.textContent = `${card.value} de ${card.suit}`;
-              cardElement.appendChild(img);
-              cardElement.appendChild(value);
-              cardsContainer.appendChild(cardElement);
-            });
+            // Mostrar cartas del dealer
+            mostrarCartas(dealerCards, "dealer-cards-container");
+            document.getElementById("player-score").textContent = `Puntuación del Jugador: ${playerScore}`;
+            document.getElementById("dealer-score").textContent = `Puntuación del Dealer: ${dealerScore}`;
+            evaluarResultados(playerScore, dealerScore);
           })
-        .catch((error) => console.error("Error:", error));
-    });
+          .catch((error) => console.error("Error:", error));
+      });
+
+      // Función para mostrar cartas en un contenedor específico
+      function mostrarCartas(cartas, contenedorId) {
+        const cardsContainer = document.getElementById(contenedorId);
+        cardsContainer.innerHTML = ""; // Limpiar el contenedor de cartas
+
+        // Mostrar cada carta extraída
+        cartas.forEach((card) => {
+          // Crear un contenedor para la carta y su valor
+          const cardElement = document.createElement("div");
+          cardElement.className = "card";
+
+          // Crear y mostrar la imagen de la carta
+          const img = document.createElement("img");
+          img.src = card.image;
+          img.alt = `${card.value} of ${card.suit}`;
+          img.style.width = "138.19px";
+          img.style.height = "192px";
+
+          // Crear y mostrar el valor de la carta
+          const value = document.createElement("p");
+          value.textContent = `${card.value} de ${card.suit}`;
+          cardElement.appendChild(img);
+          cardElement.appendChild(value);
+
+          cardsContainer.appendChild(cardElement);
+        });
+      }
+      function calcularValorMano(cartas) {
+        let valor = 0;
+        let ases = 0;
+
+        cartas.forEach((carta) => {
+            if (['JACK', 'QUEEN', 'KING'].includes(carta.value)) {
+                valor += 10;
+            } else if (carta.value === 'ACE') {
+                valor += 11;
+                ases += 1;
+            } else {
+                valor += parseInt(carta.value);
+            }
+        });
+
+        // Ajustar el valor de los Ases de 11 a 1 si el valor total supera 21
+        while (valor > 21 && ases > 0) {
+            valor -= 10;
+            ases -= 1;
+        }
+
+        return valor;
+      }
+
+      // Función para evaluar resultados básicos entre el jugador y el dealer
+      function evaluarResultados(playerScore, dealerScore) {
+          if (playerScore > 21) {
+              return("El jugador se ha pasado de 21. ¡El dealer gana!");
+          } else if (dealerScore > 21) {
+              return("El dealer se ha pasado de 21. ¡El jugador gana!");
+          } else if (playerScore > dealerScore) {
+              return("El jugador va ganando.");
+          } else if (dealerScore > playerScore) {
+              return("El dealer va ganando.");
+          } else {
+              return("Es un empate.");
+          }
+      }
     </script>
   </main>
 </Layout>
