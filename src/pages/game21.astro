@@ -156,6 +156,9 @@ import { useEffect, useState } from "react";
         <p id="dealer-score" class="font-normal text-gray-700 dark:text-gray-400">
           (10, J, Q, K) como la primera carta: --%
         </p>
+        <p id="final-result" class="font-normal text-gray-700 dark:text-gray-400">
+          (10, J, Q, K) como la primera carta: --%
+        </p>
       </a>
     </section>
 
@@ -185,6 +188,7 @@ import { useEffect, useState } from "react";
             mostrarCartas(dealerCards, "dealer-cards-container");
             document.getElementById("player-score").textContent = `Puntuación del Jugador: ${playerScore}`;
             document.getElementById("dealer-score").textContent = `Puntuación del Dealer: ${dealerScore}`;
+            document.getElementById("final-result").textContent = `Resultados: ${evaluarResultados(playerScore, dealerScore)}`;
             evaluarResultados(playerScore, dealerScore);
           })
           .catch((error) => console.error("Error:", error));
@@ -244,15 +248,20 @@ import { useEffect, useState } from "react";
       // Función para evaluar resultados básicos entre el jugador y el dealer
       function evaluarResultados(playerScore, dealerScore) {
           if (playerScore > 21) {
-              return("El jugador se ha pasado de 21. ¡El dealer gana!");
+            const resultado = "El jugador se ha pasado de 21. ¡El dealer gana!";
+              return resultado;
           } else if (dealerScore > 21) {
-              return("El dealer se ha pasado de 21. ¡El jugador gana!");
+            const resultado = "El dealer se ha pasado de 21. ¡El jugador gana!";
+              return resultado;
           } else if (playerScore > dealerScore) {
-              return("El jugador va ganando.");
+            const resultado = "El jugador va ganando.";
+              return resultado;
           } else if (dealerScore > playerScore) {
-              return("El dealer va ganando.");
+            const resultado = "El dealer va ganando.";
+              return resultado;
           } else {
-              return("Es un empate.");
+            const resultado = "Es un empate.";
+              return resultado;
           }
       }
     </script>
