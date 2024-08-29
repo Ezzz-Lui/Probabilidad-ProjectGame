@@ -29,7 +29,10 @@ import { useEffect, useState } from "react";
       </h1>
     </div>
 
-    <section id="cards-container" class="flex justify-center text-center space-x-2 text-sm">
+    <section
+      id="cards-container"
+      class="flex justify-center text-center space-x-2 text-sm"
+    >
       <img
         class="max-w-full h-48 space-x-4"
         src="https://deckofcardsapi.com/static/img/back.png"
@@ -43,44 +46,30 @@ import { useEffect, useState } from "react";
     </section>
 
     <br />
-    <section class="flex justify-center">
-      <button
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+    <section class="flex justify-center grid-flow-col">
+      <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+        <button
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Tomar Carta</button
         >
-          Tomar otra carta
-        </span>
-      </button>
-      <button
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        <button
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Quedarse</button
         >
-          Quedarse
-        </span>
-      </button>
-      <button
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        <button
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Pedir Carta</button
         >
-          Reiniciar
-        </span>
-      </button>
-      <button
-        id="draw-cards"
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        <button
+          id="draw-cards"
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Repartir Cartas</button
         >
-          Repartir Cartas
-        </span>
-      </button>
+      </div>
     </section>
 
     <p id="resultado"></p>
@@ -163,8 +152,8 @@ import { useEffect, useState } from "react";
               const img = document.createElement("img");
               img.src = card.image;
               img.alt = `${card.value} of ${card.suit}`;
-			  img.style.width = '138.19px';
-			  img.style.height = '192px';
+              img.style.width = "138.19px";
+              img.style.height = "192px";
 
               // Crear y mostrar el valor de la carta
               const value = document.createElement("p");
@@ -174,8 +163,8 @@ import { useEffect, useState } from "react";
               cardsContainer.appendChild(cardElement);
             });
           })
-        .catch((error) => console.error("Error:", error));
-    });
+          .catch((error) => console.error("Error:", error));
+      });
     </script>
   </main>
 </Layout>
