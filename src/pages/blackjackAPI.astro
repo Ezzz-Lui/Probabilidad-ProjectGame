@@ -143,17 +143,26 @@ function recargarPagina() {
         <h5
           class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          Probabilidad de fallo
+          Probabilidad de resultados
         </h5>
 
-        <p class="font-normal text-gray-700 dark:text-gray-400">
+        <p
+          id="prob-pasarse"
+          class="font-normal text-gray-700 dark:text-gray-400"
+        >
           - Pasarse de 21: --%
         </p>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
+        <p
+          id="prob-dealer-win"
+          class="font-normal text-gray-700 dark:text-gray-400 prob-dealer-win"
+        >
           - El dealer gana: --%
         </p>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
+        <p id="prob-empate" class="font-normal text-gray-700 dark:text-gray-400">
           - Empate: --%
+        </p>
+        <p id="prob-jugador-win" class="font-normal text-gray-700 dark:text-gray-400">
+          - El jugador gana: --%
         </p>
       </a>
 
@@ -195,93 +204,109 @@ function recargarPagina() {
       let dealerScore = 0;
       let gameEnded = false;
 
-      document.getElementById("draw-cards").addEventListener("click", () => {
-        fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
-          .then((response) => response.json())
-          .then((deck) => {
-            deckId = deck.deck_id; 
-            return fetch(
-              `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`
-            );
-          })
-          .then((response) => response.json())
-          .then((data) => {
-            playerCards = data.cards.slice(0, 2); // Primeras dos cartas para el jugador
-            dealerCards = data.cards.slice(2, 4); // Últimas dos cartas para el dealer
-            playerScore = calcularValorMano(playerCards);
-            dealerScore = calcularValorMano(dealerCards);
+      const drawCardsButton = document.getElementById("draw-cards");
+      const hitButton = document.getElementById("hit-button");
+      const standButton = document.getElementById("stand-button");
+      const reloadButton = document.getElementById("reload-button");
+      const playerScoreElement = document.getElementById("player-score");
+      const dealerScoreElement = document.getElementById("dealer-score");
+      const finalResultElement = document.getElementById("final-result");
+      const playerCardsContainer = document.getElementById(
+        "player-cards-container"
+      );
+      const dealerCardsContainer = document.getElementById(
+        "dealer-cards-container"
+      );
 
-            mostrarCartas(playerCards, "player-cards-container");
-            mostrarCartas([dealerCards[0]], "dealer-cards-container");
-            actualizarPuntuaciones();
-            evaluarResultados(playerScore, dealerScore);
-            document.getElementById("hit-button");
-            document.getElementById("stand-button");
-          })
-          .catch((error) => console.error("Error:", error));
+      drawCardsButton.addEventListener("click", async () => {
+        try {
+          const deckResponse = await fetch(
+            "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1"
+          );
+          const deck = await deckResponse.json();
+          deckId = deck.deck_id;
+
+          const drawResponse = await fetch(
+            `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`
+          );
+          const data = await drawResponse.json();
+
+          playerCards = data.cards.slice(0, 2);
+          dealerCards = data.cards.slice(2, 4);
+          playerScore = calcularValorMano(playerCards);
+          dealerScore = calcularValorMano(dealerCards);
+
+          mostrarCartas(playerCards, playerCardsContainer);
+          mostrarCartas([dealerCards[0]], dealerCardsContainer); // Mostrar solo una carta del dealer
+          actualizarPuntuaciones();
+          actualizarProbabilidades(playerCards, dealerCards);
+        } catch (error) {
+          console.error("Error:", error);
+        }
       });
 
-      document.getElementById("hit-button").addEventListener("click", () => {
+      hitButton.addEventListener("click", async () => {
         if (gameEnded) return;
-        fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
-          .then((response) => response.json())
-          .then((data) => {
-            const newCard = data.cards[0];
-            playerCards.push(newCard);
-            playerScore = calcularValorMano(playerCards);
-            mostrarCartas(playerCards, "player-cards-container");
-            actualizarPuntuaciones();
+        try {
+          const drawResponse = await fetch(
+            `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
+          );
+          const data = await drawResponse.json();
+          const newCard = data.cards[0];
+          playerCards.push(newCard);
+          playerScore = calcularValorMano(playerCards);
+          mostrarCartas(playerCards, playerCardsContainer);
+          actualizarPuntuaciones();
+          actualizarProbabilidades(playerCards, dealerCards);
 
-            if (playerScore > 21) {
-              finalizarJuego("El jugador se ha pasado de 21. ¡El dealer gana!");
-            }
-          });
+          if (playerScore > 21) {
+            finalizarJuego("El jugador se ha pasado de 21. ¡El dealer gana!");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
       });
 
-      document.getElementById("stand-button").addEventListener("click", () => {
+      standButton.addEventListener("click", () => {
         if (gameEnded) return;
         dealerTurn();
       });
 
-      function dealerTurn() {
-        const probabilidadPedirCarta = () => Math.random() < 0.5; // 50% de probabilidad de pedir carta
+      async function dealerTurn() {
+        const probabilidadPedirCarta = () => Math.random() < 0.5;
 
-        const tomarCartaDealer = () => {
-          return fetch(
-            `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              const newCard = data.cards[0];
-              dealerCards.push(newCard);
-              dealerScore = calcularValorMano(dealerCards);
-              mostrarCartas(dealerCards, "dealer-cards-container");
-              actualizarPuntuaciones();
-            });
-        };
-
-        const dealerDecision = async () => {
-          while (
-            dealerScore < 17 ||
-            (dealerScore < 21 && probabilidadPedirCarta())
-          ) {
-            //Manejar la logica con promesas y funcines async
-            await tomarCartaDealer();
-            // Si el dealer se pasa de 21, termina el juego
-            if (dealerScore > 21) {
-              finalizarJuego("El dealer se ha pasado de 21. ¡El jugador gana!");
-              return;
-            }
+        const tomarCartaDealer = async () => {
+          try {
+            const drawResponse = await fetch(
+              `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
+            );
+            const data = await drawResponse.json();
+            const newCard = data.cards[0];
+            dealerCards.push(newCard);
+            dealerScore = calcularValorMano(dealerCards);
+            mostrarCartas(dealerCards, dealerCardsContainer);
+            actualizarPuntuaciones();
+            actualizarProbabilidades(playerCards, dealerCards);
+          } catch (error) {
+            console.error("Error:", error);
           }
-          finalizarJuego();
         };
 
-        dealerDecision(); 
+        while (
+          dealerScore < 17 ||
+          (dealerScore < 21 && probabilidadPedirCarta())
+        ) {
+          await tomarCartaDealer();
+          if (dealerScore > 21) {
+            finalizarJuego("El dealer se ha pasado de 21. ¡El jugador gana!");
+            return;
+          }
+        }
+        finalizarJuego();
       }
 
-      function mostrarCartas(cartas, contenedorId) {
-        const cardsContainer = document.getElementById(contenedorId);
-        cardsContainer.innerHTML = ""; 
+      function mostrarCartas(cartas, contenedor) {
+        contenedor.innerHTML = "";
 
         cartas.forEach((card) => {
           const cardElement = document.createElement("div");
@@ -298,8 +323,54 @@ function recargarPagina() {
           cardElement.appendChild(img);
           cardElement.appendChild(value);
 
-          cardsContainer.appendChild(cardElement);
+          contenedor.appendChild(cardElement);
         });
+      }
+
+      function actualizarProbabilidades(playerCards, dealerCards) {
+        const probPasarse = calcularProbPasarse(playerCards);
+        const probDealerWin = calcularProbDealerWin(playerCards, dealerCards);
+        const probEmpate = calcularProbEmpate(playerCards, dealerCards);
+        const probJugadorWin = 100 - probPasarse - probDealerWin - probEmpate;
+
+        document.querySelector("#prob-pasarse").textContent =
+          `- Pasarse de 21: ${probPasarse.toFixed(2)}%`;
+        document.querySelector("#prob-dealer-win").textContent =
+          `- El dealer gana: ${probDealerWin.toFixed(2)}%`;
+        document.querySelector("#prob-empate").textContent =
+          `- Empate: ${probEmpate.toFixed(2)}%`;
+        document.querySelector("#prob-jugador-win").textContent =
+          `- Jugador gana: ${probJugadorWin.toFixed(2)}%`;
+      }
+
+      function calcularProbPasarse(playerCards) {
+        const valorMano = calcularValorMano(playerCards);
+        if (valorMano > 21)  return 100;
+        if (valorMano <12 ) return 0;
+        return ((valorMano - 10)/11 ) * 100;
+      }
+
+      function calcularProbDealerWin(playerCards, dealerCards) {
+        const valorJugador = calcularValorMano(playerCards);
+        const valorDealer = calcularValorMano(dealerCards);
+
+        if (valorDealer > 21) return 0; // aqui el dealer se pasas de 21 xd
+        if (valorDealer === valorJugador) return 0; // Empate y el dealer no gana por regla general
+
+        const margen = valorDealer - valorJugador;
+        if (margen > 0 && margen <= 3) return 60;
+        if (margen > 3) return 80;
+        if (valorDealer < 17 ) return 30;
+
+        return 20; // Ajuste simplificado
+      }
+
+      function calcularProbEmpate(playerCards, dealerCards) {
+        const valorJugador = calcularValorMano(playerCards);
+        const valorDealer = calcularValorMano(dealerCards);
+
+        if (valorJugador === valorDealer) return 100; // Probabilidad de empat si salen manos iguales
+        return 5;
       }
 
       function calcularValorMano(cartas) {
@@ -333,36 +404,31 @@ function recargarPagina() {
         } else if (playerScore === 21 && dealerScore === 21) {
           return "Es un empate con Blackjack.";
         } else if (playerScore > dealerScore) {
-          return "Has ganado!.";
+          return "¡Has ganado!";
         } else if (dealerScore > playerScore) {
           return "El dealer ha ganado!";
+        } else if (playerScore && dealerScore > 21) {
+          return "Ambos se han pasado de 21. ¡Por regla general, el dealer gana!";
         } else {
           return "Es un empate.";
         }
       }
 
       function actualizarPuntuaciones() {
-        document.getElementById("player-score").textContent =
-          `Puntuación del Jugador: ${playerScore}`;
-        document.getElementById("dealer-score").textContent =
-          `Puntuación del Dealer: ${dealerScore}`;
+        playerScoreElement.textContent = `Puntuación del Jugador: ${playerScore}`;
+        dealerScoreElement.textContent = `Puntuación del Dealer: ${dealerScore}`;
       }
 
       function finalizarJuego(mensaje = "") {
         gameEnded = true;
-        document.getElementById("hit-button");
-        document.getElementById("stand-button");
-        mostrarCartas(dealerCards, "dealer-cards-container"); // Mostrar todas las cartas del dealer
-        if (mensaje) {
-          document.getElementById("final-result").textContent = mensaje;
-        } else {
-          document.getElementById("final-result").textContent =
-            evaluarResultados(playerScore, dealerScore);
-        }
+        hitButton;
+        standButton;
+        mostrarCartas(dealerCards, dealerCardsContainer);
+        finalResultElement.textContent =
+          mensaje || evaluarResultados(playerScore, dealerScore);
+        actualizarProbabilidades(playerCards, dealerCards);
       }
 
-      // Reiniciar el juego
-      const reloadButton = document.getElementById("reload-button");
       reloadButton.addEventListener("click", () => {
         location.reload();
       });
