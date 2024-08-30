@@ -1,6 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { useEffect, useState } from "react";
+
+function recargarPagina(){
+  location.reload();
+}
 ---
 
 <Layout title="Probabilidad - Proyecto">
@@ -31,7 +34,7 @@ import { useEffect, useState } from "react";
 
     <div class="justify-center">
       <section class="justify-center text-center text-sm ">
-        <h2 class="text-center justify-center my-6">Tus cartas</h2>
+        <h2 class="text-center justify-center my-6 font-medium text-lg">Tus cartas</h2>
         <div id="player-cards-container" class="flex grid-cols-3 justify-center gap-3 my-8">
           <img
             class="max-w-full h-48 object-cover"
@@ -46,7 +49,7 @@ import { useEffect, useState } from "react";
         </div>
       </section>
       <section class="justify-center text-center text-sm ">
-        <h2 class="text-center justify-center my-6">Cartas del dealer</h2>
+        <h2 class="text-center justify-center my-6 font-medium text-lg">Cartas del dealer</h2>
         <div id="dealer-cards-container" class="flex grid-cols-3 justify-center gap-3">
           <img
             class="max-w-full h-48 space-x-4"
@@ -66,9 +69,10 @@ import { useEffect, useState } from "react";
     <section class="flex justify-center grid-flow-col">
       <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
         <button
+          id="reload-button"
           type="button"
           class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          >Tomar Carta</button
+          >Reiniciar</button
         >
         <button
           type="button"
@@ -156,6 +160,9 @@ import { useEffect, useState } from "react";
         <p id="dealer-score" class="font-normal text-gray-700 dark:text-gray-400">
           (10, J, Q, K) como la primera carta: --%
         </p>
+        <p id="final-result" class="font-normal text-gray-700 dark:text-gray-400">
+          (10, J, Q, K) como la primera carta: --%
+        </p>
       </a>
     </section>
 
@@ -185,6 +192,7 @@ import { useEffect, useState } from "react";
             mostrarCartas(dealerCards, "dealer-cards-container");
             document.getElementById("player-score").textContent = `Puntuación del Jugador: ${playerScore}`;
             document.getElementById("dealer-score").textContent = `Puntuación del Dealer: ${dealerScore}`;
+            document.getElementById("final-result").textContent = `Resultados: ${evaluarResultados(playerScore, dealerScore)}`;
             evaluarResultados(playerScore, dealerScore);
           })
           .catch((error) => console.error("Error:", error));
@@ -244,17 +252,32 @@ import { useEffect, useState } from "react";
       // Función para evaluar resultados básicos entre el jugador y el dealer
       function evaluarResultados(playerScore, dealerScore) {
           if (playerScore > 21) {
-              return("El jugador se ha pasado de 21. ¡El dealer gana!");
+            const resultado = "El jugador se ha pasado de 21. ¡El dealer gana!";
+              return resultado;
           } else if (dealerScore > 21) {
-              return("El dealer se ha pasado de 21. ¡El jugador gana!");
+            const resultado = "El dealer se ha pasado de 21. ¡El jugador gana!";
+              return resultado;
           } else if (playerScore > dealerScore) {
-              return("El jugador va ganando.");
+            const resultado = "El jugador va ganando.";
+              return resultado;
           } else if (dealerScore > playerScore) {
-              return("El dealer va ganando.");
+            const resultado = "El dealer va ganando.";
+              return resultado;
           } else {
-              return("Es un empate.");
+            const resultado = "Es un empate.";
+              return resultado;
           }
       }
+
+      // Selecciona el botón por su ID
+      const reloadButton = document.getElementById('reload-button');
+
+      // Agrega un evento de click al botón
+      reloadButton.addEventListener('click', () => {
+        // Recarga la página
+        location.reload();
+      });
+
     </script>
   </main>
 </Layout>
