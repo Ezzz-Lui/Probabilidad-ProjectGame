@@ -1,45 +1,436 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "../layouts/Layout.astro";
+
+function recargarPagina() {
+  location.reload();
+}
 ---
+
 <Layout title="Probabilidad - Proyecto">
-    <main>
-        <div class="relative my-6 flex justify-start items-center">
-			<a href="/">
-				<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-					<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
-				</svg>
-			</a>
-			<h1 class="ml-2 pl-4 text-4xl font-bold" transition:persist="fade">Proyecto de Probabilidad <a class="text-gradient">21 Blackjack</a></h1>
-		</div>
-    
-        <button id="draw-cards">Sacar Cartas</button>
-        <div id="cards-container"></div>
+  <main>
+    <div class="relative my-6 flex justify-start items-center">
+      <a href="/">
+        <svg
+          class="w-6 h-6 text-gray-800 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 12h14M5 12l4-4m-4 4 4 4"></path>
+        </svg>
+      </a>
+      <h1 class="ml-2 pl-4 text-4xl font-bold" transition:persist="fade">
+        Proyecto de Probabilidad <a class="text-gradient">21 Blackjack</a>
+      </h1>
+    </div>
 
-        <script>
-            document.getElementById('draw-cards').addEventListener('click', () => {
-                // Paso 1: Crear un nuevo mazo y barajar
-                fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-                    .then(response => response.json())
-                    .then(deck => {
-                        // Paso 2: Sacar dos cartas
-                        return fetch(`https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=2`);
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const cardsContainer = document.getElementById('cards-container');
-                        cardsContainer.innerHTML = ''; // Limpiar el contenedor de cartas
+    <div class="justify-center">
+      <section class="justify-center text-center text-sm">
+        <h2 class="text-center justify-center my-6 font-medium text-lg">
+          Tus cartas
+        </h2>
+        <div
+          id="player-cards-container"
+          class="flex grid-cols-3 justify-center gap-3 my-8"
+        >
+          <img
+            class="max-w-full h-48 object-cover"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+          <img
+            class="max-w-full h-48"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+        </div>
+      </section>
+      <section class="justify-center text-center text-sm">
+        <h2 class="text-center justify-center my-6 font-medium text-lg">
+          Cartas del dealer
+        </h2>
+        <div
+          id="dealer-cards-container"
+          class="flex grid-cols-3 justify-center gap-3"
+        >
+          <img
+            class="max-w-full h-48 space-x-4"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+          <img
+            class="max-w-full h-48"
+            src="https://deckofcardsapi.com/static/img/back.png"
+            alt=""
+          />
+        </div>
+      </section>
+    </div>
 
-                        // Mostrar cada carta extraída
-                        data.cards.forEach(card => {
-                            const img = document.createElement('img');
-                            img.src = card.image; // URL de la imagen de la carta
-                            img.alt = `${card.value} of ${card.suit}`;
-                            img.style.width = '100px'; // Tamaño de la carta
-                            cardsContainer.appendChild(img);
-                        });
-                    })
-                    .catch(error => console.error('Error:', error));
+    <br />
+    <section class="flex justify-center grid-flow-col">
+      <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+        <button
+          id="reload-button"
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Reiniciar</button
+        >
+        <button
+          id="stand-button"
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Quedarse</button
+        >
+        <button
+          id="hit-button"
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Pedir Carta</button
+        >
+        <button
+          id="draw-cards"
+          type="button"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-extrabold rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >Repartir Cartas</button
+        >
+      </div>
+    </section>
+
+    <p id="resultado"></p>
+    <br />
+    <section
+      class="flex flex-col space-y-4 justify-center px-4 sm:px-6 lg:px-8"
+    >
+      <h2 class="pb-6 font-semibold text-3xl">Estadisticas</h2>
+
+      <a
+        href="#"
+        class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        <h5
+          class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Probabilidad de Blackjack en un saque
+        </h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          La probabilidad de obtener 21 en el primer saque es de aproximadamente <strong
+            class="font-extrabold">4.8%</strong
+          >.
+        </p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          <strong>Cálculo:</strong>
+          La probabilidad de sacar un As primero es <code>4/52</code>, y la de
+          sacar una carta de valor 10 después es <code>16/51</code>.
+          Alternativamente, la probabilidad de sacar un 10 primero es <code
+            >16/52</code
+          >, y luego un As es <code>4/51</code>.
+        </p>
+      </a>
+
+      <a
+        href="#"
+        class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        <h5
+          class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Probabilidad de fallo
+        </h5>
+
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          - Pasarse de 21: --%
+        </p>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          - El dealer gana: --%
+        </p>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          - Empate: --%
+        </p>
+      </a>
+
+      <a
+        href="#"
+        class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        <h5
+          class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Stats Actuales
+        </h5>
+        <p
+          id="player-score"
+          class="font-normal text-gray-700 dark:text-gray-400"
+        >
+          (10, J, Q, K) como la primera carta: --%
+        </p>
+        <p
+          id="dealer-score"
+          class="font-normal text-gray-700 dark:text-gray-400"
+        >
+          (10, J, Q, K) como la primera carta: --%
+        </p>
+        <p
+          id="final-result"
+          class="font-normal text-gray-700 dark:text-gray-400"
+        >
+          (10, J, Q, K) como la primera carta: --%
+        </p>
+      </a>
+    </section>
+
+    <script>
+      let deckId = "";
+      let playerCards = [];
+      let dealerCards = [];
+      let playerScore = 0;
+      let dealerScore = 0;
+      let gameEnded = false;
+
+      document.getElementById("draw-cards").addEventListener("click", () => {
+        fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
+          .then((response) => response.json())
+          .then((deck) => {
+            deckId = deck.deck_id; 
+            return fetch(
+              `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`
+            );
+          })
+          .then((response) => response.json())
+          .then((data) => {
+            playerCards = data.cards.slice(0, 2); // Primeras dos cartas para el jugador
+            dealerCards = data.cards.slice(2, 4); // Últimas dos cartas para el dealer
+            playerScore = calcularValorMano(playerCards);
+            dealerScore = calcularValorMano(dealerCards);
+
+            mostrarCartas(playerCards, "player-cards-container");
+            mostrarCartas([dealerCards[0]], "dealer-cards-container");
+            actualizarPuntuaciones();
+            evaluarResultados(playerScore, dealerScore);
+            document.getElementById("hit-button");
+            document.getElementById("stand-button");
+          })
+          .catch((error) => console.error("Error:", error));
+      });
+
+      document.getElementById("hit-button").addEventListener("click", () => {
+        if (gameEnded) return;
+        fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+          .then((response) => response.json())
+          .then((data) => {
+            const newCard = data.cards[0];
+            playerCards.push(newCard);
+            playerScore = calcularValorMano(playerCards);
+            mostrarCartas(playerCards, "player-cards-container");
+            actualizarPuntuaciones();
+
+            if (playerScore > 21) {
+              finalizarJuego("El jugador se ha pasado de 21. ¡El dealer gana!");
+            }
+          });
+      });
+
+      document.getElementById("stand-button").addEventListener("click", () => {
+        if (gameEnded) return;
+        dealerTurn();
+      });
+
+      function dealerTurn() {
+        const probabilidadPedirCarta = () => Math.random() < 0.5; // 50% de probabilidad de pedir carta
+
+        const tomarCartaDealer = () => {
+          return fetch(
+            `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              const newCard = data.cards[0];
+              dealerCards.push(newCard);
+              dealerScore = calcularValorMano(dealerCards);
+              mostrarCartas(dealerCards, "dealer-cards-container");
+              actualizarPuntuaciones();
             });
-        </script>
-    </main>
+        };
+
+        const dealerDecision = async () => {
+          while (
+            dealerScore < 17 ||
+            (dealerScore < 21 && probabilidadPedirCarta())
+          ) {
+            //Manejar la logica con promesas y funcines async
+            await tomarCartaDealer();
+            // Si el dealer se pasa de 21, termina el juego
+            if (dealerScore > 21) {
+              finalizarJuego("El dealer se ha pasado de 21. ¡El jugador gana!");
+              return;
+            }
+          }
+          finalizarJuego();
+        };
+
+        dealerDecision(); 
+      }
+
+      function mostrarCartas(cartas, contenedorId) {
+        const cardsContainer = document.getElementById(contenedorId);
+        cardsContainer.innerHTML = ""; 
+
+        cartas.forEach((card) => {
+          const cardElement = document.createElement("div");
+          cardElement.className = "card";
+
+          const img = document.createElement("img");
+          img.src = card.image;
+          img.alt = `${card.value} of ${card.suit}`;
+          img.style.width = "138.19px";
+          img.style.height = "192px";
+
+          const value = document.createElement("p");
+          value.textContent = `${card.value} de ${card.suit}`;
+          cardElement.appendChild(img);
+          cardElement.appendChild(value);
+
+          cardsContainer.appendChild(cardElement);
+        });
+      }
+
+      function calcularValorMano(cartas) {
+        let valor = 0;
+        let ases = 0;
+
+        cartas.forEach((carta) => {
+          if (["JACK", "QUEEN", "KING"].includes(carta.value)) {
+            valor += 10;
+          } else if (carta.value === "ACE") {
+            valor += 11;
+            ases += 1;
+          } else {
+            valor += parseInt(carta.value);
+          }
+        });
+
+        while (valor > 21 && ases > 0) {
+          valor -= 10;
+          ases -= 1;
+        }
+
+        return valor;
+      }
+
+      function evaluarResultados(playerScore, dealerScore) {
+        if (playerScore > 21) {
+          return "El jugador se ha pasado de 21. ¡El dealer gana!";
+        } else if (dealerScore > 21) {
+          return "El dealer se ha pasado de 21. ¡El jugador gana!";
+        } else if (playerScore === 21 && dealerScore === 21) {
+          return "Es un empate con Blackjack.";
+        } else if (playerScore > dealerScore) {
+          return "Has ganado!.";
+        } else if (dealerScore > playerScore) {
+          return "El dealer ha ganado!";
+        } else {
+          return "Es un empate.";
+        }
+      }
+
+      function actualizarPuntuaciones() {
+        document.getElementById("player-score").textContent =
+          `Puntuación del Jugador: ${playerScore}`;
+        document.getElementById("dealer-score").textContent =
+          `Puntuación del Dealer: ${dealerScore}`;
+      }
+
+      function finalizarJuego(mensaje = "") {
+        gameEnded = true;
+        document.getElementById("hit-button");
+        document.getElementById("stand-button");
+        mostrarCartas(dealerCards, "dealer-cards-container"); // Mostrar todas las cartas del dealer
+        if (mensaje) {
+          document.getElementById("final-result").textContent = mensaje;
+        } else {
+          document.getElementById("final-result").textContent =
+            evaluarResultados(playerScore, dealerScore);
+        }
+      }
+
+      // Reiniciar el juego
+      const reloadButton = document.getElementById("reload-button");
+      reloadButton.addEventListener("click", () => {
+        location.reload();
+      });
+    </script>
+  </main>
 </Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem 1rem;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .astro-a {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translatex(-50%);
+    width: 220px;
+    height: auto;
+    z-index: -1;
+  }
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+  .instructions {
+    margin-bottom: 2rem;
+    border: 1px solid rgba(var(--accent-light), 25%);
+    background: linear-gradient(
+      rgba(var(--accent-dark), 66%),
+      rgba(var(--accent-dark), 33%)
+    );
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  .instructions code {
+    font-size: 0.8em;
+    font-weight: bold;
+    background: rgba(var(--accent-light), 12%);
+    color: rgb(var(--accent-light));
+    border-radius: 4px;
+    padding: 0.3em 0.4em;
+  }
+  .instructions strong {
+    color: rgb(var(--accent-light));
+  }
+  /* src/styles/Deck.css */
+  .deck {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 200px;
+  }
+
+  .cards {
+    margin-top: 10px;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-bottom: 5px;
+    background: #f9f9f9;
+  }
+</style>
