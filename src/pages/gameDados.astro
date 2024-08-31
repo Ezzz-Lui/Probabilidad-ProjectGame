@@ -27,8 +27,8 @@ import Layout from '../layouts/Layout.astro';
       <div id="resultadoProbabilidad"></div>
       
       <div id="dados-container">
-        <img src="/src/assets/dado1.png" alt="Dado 1" class="dado" id="dado1" />
-        <img src="/src/assets/dado1.png" alt="Dado 2" class="dado" id="dado2" />
+        <img src="/dado1.png" alt="Dado 1" class="dado" id="dado1" />
+        <img src="/dado1.png" alt="Dado 2" class="dado" id="dado2" />
       </div>
     </div>
   </main>
@@ -50,8 +50,8 @@ import Layout from '../layouts/Layout.astro';
 
         if (isNaN(targetNumber) || isNaN(numLanzamientos) || targetNumber < 2 || targetNumber > 12 || numLanzamientos <= 0) {
           resultadoProbabilidadDiv.innerHTML = `<p>Por favor ingresa valores válidos.</p>`;
-          dado1.src = '/src/assets/dado1.png';
-          dado2.src = '/src/assets/dado1.png'; 
+          dado1.src = '/dado1.png';
+          dado2.src = '/dado1.png'; 
           return;
         }
 
@@ -68,8 +68,8 @@ import Layout from '../layouts/Layout.astro';
         `;
 
         if (combinaciones.length > 0) {
-          dado1.src = `/src/assets/dado${combinaciones[0][0]}.png`;
-          dado2.src = `/src/assets/dado${combinaciones[0][1]}.png`;
+          dado1.src = `/dado${combinaciones[0][0]}.png`;
+          dado2.src = `/dado${combinaciones[0][1]}.png`;
         }
       });
 
