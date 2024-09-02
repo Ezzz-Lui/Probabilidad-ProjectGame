@@ -105,85 +105,112 @@ import Layout from '../layouts/Layout.astro';
 
 
 <style>
-  main {
-    margin: auto;
-    padding: 1rem 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
+main {
+  margin: auto;
+  padding: 1rem 1rem;
+  width: 100%; /* Ancho completo en móviles */
+  max-width: 800px;
+  color: white;
+  font-size: 20px;
+  line-height: 1.6;
+}
 
+h1 {
+  font-size: 2.5rem; /* Tamaño más pequeño en móviles */
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+}
+
+.text-gradient {
+  background-image: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 400%;
+  background-position: 0%;
+}
+
+.instructions {
+  margin-bottom: 2rem;
+  border: 1px solid rgba(var(--accent-light), 25%);
+  background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.dice-probability {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: black;
+  background-color: white;
+  border: 1px solid #0070f3;
+  border-radius: 4px;
+  width: calc(100% - 4rem); /* Ajusta el ancho en pantallas pequeñas */
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%; /* Ocupa todo el ancho disponible */
+  margin-top: 1rem; /* Añade margen superior */
+}
+
+button:hover {
+  background-color: #005bb5;
+}
+
+#resultadoProbabilidad {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: white;
+}
+
+#dados-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Asegura que los dados estén alineados correctamente */
+  max-width: 200px;
+  margin-top: 1rem;
+}
+
+.dado {
+  width: 80px;
+  height: 80px;
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 768px) {
   h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-    margin-top: 1em;
+    font-size: 2rem; /* Reduce el tamaño del título en pantallas pequeñas */
   }
 
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 0%;
-  }
-
-  .instructions {
-    margin-bottom: 2rem;
-    border: 1px solid rgba(var(--accent-light), 25%);
-    background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-    padding: 1.5rem;
-    border-radius: 8px;
-  }
-
-  .dice-probability {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  input {
-    padding: 0.5rem;
-    font-size: 1rem;
-    color: black;
-    background-color: white;
-    border: 1px solid #0070f3;
-    border-radius: 4px;
-  }
-
-  button {
-    padding: 0.5rem 1rem;
-    background-color: #0070f3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #005bb5;
-  }
-
-  #resultadoProbabilidad {
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    color: white;
+  input, button {
+    width: 100%; /* Asegura que el input y el botón ocupen todo el ancho en móviles */
+    margin: 0.5rem 0; /* Ajusta el margen en pantallas pequeñas */
   }
 
   #dados-container {
-    display: flex;
-    justify-content: space-between;
-    width: 200px;
-    margin-top: 1rem;
+    width: 100%; /* Asegura que los dados se alineen correctamente en pantallas pequeñas */
+    justify-content: center; /* Centra los dados en pantallas pequeñas */
   }
 
   .dado {
-    width: 80px;
-    height: 80px;
+    width: 60px; /* Reduce el tamaño de los dados en pantallas pequeñas */
+    height: 60px;
   }
+}
+
 </style>
